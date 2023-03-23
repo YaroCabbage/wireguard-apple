@@ -4,9 +4,11 @@
 
 .DS_Store
 .idea
+.vscode
 
 ## Build generated
 build/
+lib
 DerivedData
 
 ## Various settings
