@@ -1,6 +1,6 @@
 Pod::Spec.new do |spec|
   spec.name = "WireGuardKit"
-  spec.version = "0.1"
+  spec.version = "0.2"
   spec.summary = "WireGuard for iOS and macOS"
 
   spec.description = <<-DESC
@@ -27,11 +27,9 @@ Pod::Spec.new do |spec|
 
   spec.prepare_command = <<-CMD
 ./build-libwg.sh
-./build-framework.sh
   CMD
 
-  spec.ios.vendored_frameworks = "frameworks/ios/libwg-go.framework"
-  spec.osx.vendored_frameworks = "frameworks/macos/libwg-go.framework"
+  spec.vendored_frameworks = "Frameworks/wg-go.xcframework"
   spec.swift_version = "5.7"
 
   spec.source_files = [
@@ -58,7 +56,5 @@ Pod::Spec.new do |spec|
       "${PODS_TARGET_SRCROOT}/WireGuardKit/Sources/WireGuardKitGo/wireguard.h",
     ],
     "APPLICATION_EXTENSION_API_ONLY" => "YES",
-    "EXCLUDED_ARCHS[sdk=iphonesimulator*]" => "arm64",
   }
-  spec.user_target_xcconfig = { "EXCLUDED_ARCHS[sdk=iphonesimulator*]" => "arm64" }
 end
