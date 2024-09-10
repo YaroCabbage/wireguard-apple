@@ -10,7 +10,6 @@
 build/
 lib
 DerivedData
-Frameworks
 
 ## Various settings
 *.pbxuser

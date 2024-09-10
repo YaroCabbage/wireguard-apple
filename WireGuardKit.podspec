@@ -1,6 +1,6 @@
 Pod::Spec.new do |spec|
   spec.name = "WireGuardKit"
-  spec.version = "0.3"
+  spec.version = "0.4"
   spec.summary = "WireGuard for iOS and macOS"
 
   spec.description = <<-DESC
@@ -24,10 +24,6 @@ Pod::Spec.new do |spec|
   #  For header files it will include any header in the folder.
   #  Not including the public_header_files will make all headers public.
   #
-
-  spec.prepare_command = <<-CMD
-./build-libwg.sh
-  CMD
 
   spec.vendored_frameworks = "Frameworks/wg-go.xcframework"
   spec.swift_version = "5.7"
