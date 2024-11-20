@@ -1,6 +1,6 @@
 Pod::Spec.new do |spec|
   spec.name = "WireGuardKit"
-  spec.version = "0.4"
+  spec.version = "0.5"
   spec.summary = "WireGuard for iOS and macOS"
 
   spec.description = <<-DESC
