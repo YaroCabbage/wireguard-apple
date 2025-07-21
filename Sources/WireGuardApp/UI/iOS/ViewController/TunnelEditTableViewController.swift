@@ -34,7 +34,11 @@ class TunnelEditTableViewController: UITableViewController {
     let interfaceFieldsBySection: [[TunnelViewModel.InterfaceField]] = [
         [.name],
         [.privateKey, .publicKey, .generateKeyPair],
-        [.addresses, .listenPort, .mtu, .dns]
+        [.addresses, .listenPort, .dns, .mtu],
+        [.junkPacketCount, .junkPacketMinSize, .junkPacketMaxSize,
+         .initPacketJunkSize, .responsePacketJunkSize, .cookieReplyPacketJunkSize, .transportPacketJunkSize,
+         .initPacketMagicHeader, .responsePacketMagicHeader, .underloadPacketMagicHeader, .transportPacketMagicHeader,
+         .specialJunk1, .specialJunk2, .specialJunk3, .specialJunk4, .specialJunk5, .controlledJunk1, .controlledJunk2, .controlledJunk3, .specialHandshakeTimeout]
     ]
 
     let peerFields: [TunnelViewModel.PeerField] = [
@@ -253,6 +257,11 @@ extension TunnelEditTableViewController {
             cell.keyboardType = .default
         case .status, .toggleStatus:
             fatalError("Unexpected interface field")
+        case .junkPacketCount, .junkPacketMinSize, .junkPacketMaxSize,
+                .initPacketJunkSize, .responsePacketJunkSize, .cookieReplyPacketJunkSize, .transportPacketJunkSize,
+                .initPacketMagicHeader, .responsePacketMagicHeader, .underloadPacketMagicHeader, .transportPacketMagicHeader,
+                .specialJunk1, .specialJunk2, .specialJunk3, .specialJunk4, .specialJunk5, .controlledJunk1, .controlledJunk2, .controlledJunk3, .specialHandshakeTimeout:
+            cell.keyboardType = .numberPad
         }
 
         cell.isValueValid = (!tunnelViewModel.interfaceData.fieldsWithError.contains(field))

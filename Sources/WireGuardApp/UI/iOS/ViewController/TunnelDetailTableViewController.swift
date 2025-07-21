@@ -15,7 +15,11 @@ class TunnelDetailTableViewController: UITableViewController {
 
     static let interfaceFields: [TunnelViewModel.InterfaceField] = [
         .name, .publicKey, .addresses,
-        .listenPort, .mtu, .dns
+        .listenPort, .dns, .mtu,
+        .junkPacketCount, .junkPacketMinSize, .junkPacketMaxSize,
+        .initPacketJunkSize, .responsePacketJunkSize, .cookieReplyPacketJunkSize, .transportPacketJunkSize,
+        .initPacketMagicHeader, .responsePacketMagicHeader, .underloadPacketMagicHeader, .transportPacketMagicHeader,
+        .specialJunk1, .specialJunk2, .specialJunk3, .specialJunk4, .specialJunk5, .controlledJunk1, .controlledJunk2, .controlledJunk3, .specialHandshakeTimeout
     ]
 
     static let peerFields: [TunnelViewModel.PeerField] = [

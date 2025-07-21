@@ -563,7 +563,7 @@ private func lastErrorTextFromNetworkExtension(for tunnel: TunnelContainer) -> (
     return (tr("alertTunnelActivationFailureTitle"), tr("alertTunnelActivationFailureMessage"))
 }
 
-public class TunnelContainer: NSObject {
+class TunnelContainer: NSObject {
     @objc dynamic var name: String
     @objc dynamic var status: TunnelStatus
 
@@ -724,7 +724,7 @@ public class TunnelContainer: NSObject {
     }
 }
 
-public extension NETunnelProviderManager {
+extension NETunnelProviderManager {
     private static var cachedConfigKey: UInt8 = 0
 
     var tunnelConfiguration: TunnelConfiguration? {

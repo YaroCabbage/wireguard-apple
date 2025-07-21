@@ -5,7 +5,7 @@ import Foundation
 import NetworkExtension
 import os
 
-open class WireGuardTunnelProvider: NEPacketTunnelProvider {
+class PacketTunnelProvider: NEPacketTunnelProvider {
 
     private lazy var adapter: WireGuardAdapter = {
         return WireGuardAdapter(with: self) { logLevel, message in
@@ -13,26 +13,20 @@ open class WireGuardTunnelProvider: NEPacketTunnelProvider {
         }
     }()
 
-    open override func startTunnel(options: [String: NSObject]?, completionHandler: @escaping (Error?) -> Void) {
-        guard let wgcfg = options?["cfg"] as? String else {
-            wg_log(.error, message: "Could not get wgcfg")
-            completionHandler(PacketTunnelProviderError.savedProtocolConfigurationIsInvalid)
-            return
-        }
-        let tunnelConfiguration: TunnelConfiguration
-        do {
-            tunnelConfiguration = try TunnelConfiguration(fromWgQuickConfig: wgcfg)
-        } catch let error {
-            wg_log(.error, message: "Could not create tunnel configuration: \(error)")
-            completionHandler(PacketTunnelProviderError.savedProtocolConfigurationIsInvalid)
-            return
-        }
+    override func startTunnel(options: [String: NSObject]?, completionHandler: @escaping (Error?) -> Void) {
         let activationAttemptId = options?["activationAttemptId"] as? String
         let errorNotifier = ErrorNotifier(activationAttemptId: activationAttemptId)
 
         Logger.configureGlobal(tagged: "NET", withFilePath: FileManager.logFileURL?.path)
 
         wg_log(.info, message: "Starting tunnel from the " + (activationAttemptId == nil ? "OS directly, rather than the app" : "app"))
+
+        guard let tunnelProviderProtocol = self.protocolConfiguration as? NETunnelProviderProtocol,
+              let tunnelConfiguration = tunnelProviderProtocol.asTunnelConfiguration() else {
+            errorNotifier.notify(PacketTunnelProviderError.savedProtocolConfigurationIsInvalid)
+            completionHandler(PacketTunnelProviderError.savedProtocolConfigurationIsInvalid)
+            return
+        }
 
         // Start the tunnel
         adapter.start(tunnelConfiguration: tunnelConfiguration) { adapterError in
@@ -75,7 +69,7 @@ open class WireGuardTunnelProvider: NEPacketTunnelProvider {
         }
     }
 
-    open override func stopTunnel(with reason: NEProviderStopReason, completionHandler: @escaping () -> Void) {
+    override func stopTunnel(with reason: NEProviderStopReason, completionHandler: @escaping () -> Void) {
         wg_log(.info, staticMessage: "Stopping tunnel")
 
         adapter.stop { error in
@@ -95,7 +89,7 @@ open class WireGuardTunnelProvider: NEPacketTunnelProvider {
         }
     }
 
-    open override func handleAppMessage(_ messageData: Data, completionHandler: ((Data?) -> Void)? = nil) {
+    override func handleAppMessage(_ messageData: Data, completionHandler: ((Data?) -> Void)? = nil) {
         guard let completionHandler = completionHandler else { return }
 
         if messageData.count == 1 && messageData[0] == 0 {
@@ -112,7 +106,7 @@ open class WireGuardTunnelProvider: NEPacketTunnelProvider {
     }
 }
 
-public extension WireGuardLogLevel {
+extension WireGuardLogLevel {
     var osLogLevel: OSLogType {
         switch self {
         case .verbose:
