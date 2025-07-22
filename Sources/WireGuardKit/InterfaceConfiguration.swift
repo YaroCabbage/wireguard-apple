@@ -31,6 +31,11 @@ public struct InterfaceConfiguration {
     public var controlledJunk2: String?
     public var controlledJunk3: String?
     public var specialHandshakeTimeout: Int?
+    /// The server URL if `dnsProtocol = .https`.
+    public var dnsHTTPSURL: URL?
+
+    /// The server name if `dnsProtocol = .tls`.
+    public var dnsTLSServerName: String?
 
     public init(privateKey: PrivateKey) {
         self.privateKey = privateKey
